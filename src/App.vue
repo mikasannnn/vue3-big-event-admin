@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <div>我是App.vue</div>
+  <div>我是App.vues</div>
 </template>
 
 <style scoped>
