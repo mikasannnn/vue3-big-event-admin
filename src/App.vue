@@ -7,7 +7,8 @@
 // 2. 获取路由参数 router userouter
 //    const route = useRoute()
 import { useRoute,useRouter } from 'vue-router';
-import TestDemo from './components/TestDemo.vue';
+
+import { useUserStore } from './stores/user.js';
 const router = useRouter()
 const route = useRoute()
 const goList = () => {
@@ -15,6 +16,7 @@ const goList = () => {
   console.log(router,route)
 }
 
+const userStore = useUserStore()
 </script>
 
 <template>
@@ -23,6 +25,13 @@ const goList = () => {
     <TestDemo></TestDemo>
     <el-button @click="$router.push('/home')">跳转首页</el-button>
     <el-button @click="goList">跳转列表页</el-button>
+
+    <el-button type="primary">Primary Button</el-button>
+    <el-button type="success">Success Button</el-button>
+
+    <p>{{ userStore.token }}</p>
+    <el-button @click="userStore.setToken('Bear sadoijaijo')">登录</el-button>
+    <el-button @click="userStore.removeToken()">退出</el-button>
   </div>
 
 </template>
