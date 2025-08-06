@@ -7,8 +7,10 @@
 // 2. 获取路由参数 router userouter
 //    const route = useRoute()
 import { useRoute,useRouter } from 'vue-router';
+import { useUserStore, useCountStore } from '@/stores';
+import {  } from './stores/modules/counter.js';
 
-import { useUserStore } from './stores/user.js';
+const countStore = useCountStore()
 const router = useRouter()
 const route = useRoute()
 const goList = () => {
@@ -32,8 +34,11 @@ const userStore = useUserStore()
     <p>{{ userStore.token }}</p>
     <el-button @click="userStore.setToken('Bear sadoijaijo')">登录</el-button>
     <el-button @click="userStore.removeToken()">退出</el-button>
-  </div>
 
+    <hr/>
+    {{ countStore.count }}
+    <el-button @click="countStore.add(2)">加法</el-button>
+  </div>
 </template>
 
 <style scoped>
