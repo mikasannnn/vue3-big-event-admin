@@ -7,6 +7,7 @@
 // 2. 获取路由参数 router userouter
 //    const route = useRoute()
 import { useRoute,useRouter } from 'vue-router';
+import TestDemo from './components/TestDemo.vue';
 const router = useRouter()
 const route = useRoute()
 const goList = () => {
@@ -18,9 +19,10 @@ const goList = () => {
 
 <template>
   <div>
-    我是App.vues
-    <button @click="$router.push('/home')">跳转首页</button>
-    <button @click="goList">跳转列表页</button>
+    我是App.vue
+    <TestDemo></TestDemo>
+    <el-button @click="$router.push('/home')">跳转首页</el-button>
+    <el-button @click="goList">跳转列表页</el-button>
   </div>
 
 </template>
