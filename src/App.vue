@@ -7,7 +7,7 @@
 // 2. 获取路由参数 router userouter
 //    const route = useRoute()
 import { useRoute,useRouter } from 'vue-router';
-import { useUserStore, useCountStore } from '@/stores';
+import { useUserStore, useCountStore } from './stores';
 import {  } from './stores/modules/counter.js';
 
 const countStore = useCountStore()
@@ -23,6 +23,15 @@ const userStore = useUserStore()
 
 <template>
   <div>
+    <hr/>
+    <router-view></router-view>
+    <hr/>
+    <hr/>
+    <hr/>
+    <hr/>
+
+
+
     我是App.vue
     <TestDemo></TestDemo>
     <el-button @click="$router.push('/home')">跳转首页</el-button>
