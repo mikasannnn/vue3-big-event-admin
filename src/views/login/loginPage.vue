@@ -1,11 +1,15 @@
 <script setup>
-import { userRegisterService } from '@/api/user'
-import { User, Lock ,View} from '@element-plus/icons-vue'
+import { userRegisterService,userLoginService } from '@/api/user'
+import { useUserStore } from '@/stores'
+import { User, Lock } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
+import { watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 
-const isRegister = ref(true)
+
+const isRegister = ref(false)
 const form = ref()
 
 // 整个的用于提交的form数据对象
@@ -57,6 +61,27 @@ const Register = async () => {
   console.log('成功')
     // 切换到登录
   isRegister.value = false
+}
+
+// 切换的时候要重置表单内容
+watch(isRegister, () => {
+  formModel.value = {
+    username: '',
+    password: '',
+    repassword: ''
+  }
+})
+
+const userStore = useUserStore()
+const router = useRouter()
+
+const login = async () => {
+  await form.value.validate()
+  const res = await userLoginService(formModel.value)
+  userStore.setToken(res.data.token)
+  ElMessage.success('登录成功')
+  // console.log('登录成功',res)
+  router.push({ path: '/' })
 }
 </script>
 
@@ -117,24 +142,23 @@ const Register = async () => {
         </el-form-item>
       </el-form>
       <!-- 登录相关表单 -->
-      <el-form  ref="form" size="large" autocomplete="off" v-else>
+      <el-form :model="formModel" :rules="rules"  ref="form" size="large" autocomplete="off" v-else>
         <el-form-item>
           <h1>登录</h1>
         </el-form-item>
-        <el-form-item >
-          <el-input v-model="username" :prefix-icon="User" placeholder="请输入用户名"></el-input>
+        <el-form-item prop="username">
+          <el-input v-model="formModel.username" :prefix-icon="User" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input
+            v-model="formModel.password"
             name="password"
             :prefix-icon="Lock"
             type="password"
             placeholder="请输入密码"
           ></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input :prefix-icon="View" placeholder="测试代码"></el-input>
-        </el-form-item>
+
         <el-form-item class="flex">
           <div class="flex">
             <el-checkbox>记住我</el-checkbox>
@@ -142,7 +166,7 @@ const Register = async () => {
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space
+          <el-button @click="login" class="button" type="primary" auto-insert-space
             >登录</el-button
           >
         </el-form-item>
