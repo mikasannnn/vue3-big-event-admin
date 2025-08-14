@@ -1,7 +1,13 @@
 <script setup>
+import { userRegisterService } from '@/api/user'
 import { User, Lock ,View} from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
+
+
 const isRegister = ref(true)
+const form = ref()
+
 // 整个的用于提交的form数据对象
 const formModel = ref({
   username:'',
@@ -41,6 +47,16 @@ const rules = {
       }, trigger: 'blur'
     }
   ]
+}
+
+const Register = async () => {
+  // 注册成功之前，先进行校验，校验成功->请求，校验失败->自动提示
+  await form.value.validate()
+  await userRegisterService(formModel.value)
+  ElMessage.success('注册成功')
+  console.log('成功')
+    // 切换到登录
+  isRegister.value = false
 }
 </script>
 
@@ -90,7 +106,7 @@ const rules = {
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space>
+          <el-button  @click="Register" class="button" type="primary" auto-insert-space>
             注册
           </el-button>
         </el-form-item>
@@ -101,12 +117,12 @@ const rules = {
         </el-form-item>
       </el-form>
       <!-- 登录相关表单 -->
-      <el-form ref="form" size="large" autocomplete="off" v-else>
+      <el-form  ref="form" size="large" autocomplete="off" v-else>
         <el-form-item>
           <h1>登录</h1>
         </el-form-item>
-        <el-form-item>
-          <el-input :prefix-icon="User" placeholder="请输入用户名"></el-input>
+        <el-form-item >
+          <el-input v-model="username" :prefix-icon="User" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item>
           <el-input
