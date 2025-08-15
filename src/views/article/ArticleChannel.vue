@@ -20,6 +20,7 @@ getChannelList()
 
 const onEditChannel = (row) => {
   console.log(row)
+  dialog.value.open({ row })
 }
 
 const onDelChannel = (row, $index) => {
@@ -28,6 +29,10 @@ const onDelChannel = (row, $index) => {
 
 const onAddChannel = () => {
   dialog.value.open({})
+}
+
+const onSuccess = () => {
+  getChannelList()
 }
 </script>
 
@@ -64,7 +69,7 @@ const onAddChannel = () => {
         <el-empty description="没有数据"></el-empty>
       </template>
     </el-table>
-    <channelEdit ref="dialog"></channelEdit>
+    <channelEdit @success="onSuccess" ref="dialog"></channelEdit>
   </PageContainer>
 </template>
 
